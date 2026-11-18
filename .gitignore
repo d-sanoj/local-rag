@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Environment / secrets
+.env
+
+# Local data — the vector DB, manifest, BM25 snapshot, and your documents.
+# Your documents are YOURS; they never belong in the repo. The four sample
+# files in data/documents/ are the exception: they are tracked so a fresh
+# clone has something to ask questions about.
+data/*
+!data/documents
+data/documents/*
+!data/documents/intro.md
+!data/documents/notes.txt
+!data/documents/data.csv
+!data/documents/example.py
+
+# macOS / editors
+.DS_Store
+.idea/
+.vscode/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
