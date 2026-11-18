@@ -1,0 +1,102 @@
+# CI for local-rag — lint, unit tests, and an end-to-end check over example
+# data covering every file type the RAG supports.
+#
+# The e2e job is the one that replaces "download it and check it yourself":
+# it boots the real service with REAL embedding/reranker models, indexes
+# the example documents in data/examples/, and asserts each one is
+# retrievable by a question about it. The per-example PASS/FAIL table is
+# printed in the log and uploaded as an artifact. Answer generation uses
+# the echo LLM (no Ollama in CI — the 2GB model download is not worth it);
+# the real Ollama path is verified on a Mac.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install ruff
+      - run: ruff check app tests scripts streamlit_app
+      - run: ruff format --check app tests scripts streamlit_app
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # Unit tests use the dummy embedding/reranker/LLM providers, so torch
+      # and sentence-transformers are not needed here — skipping them saves
+      # several minutes of install time per run.
+      - name: Install dependencies (no model libraries)
+        run: |
+          grep -v -e '^torch' -e '^sentence-transformers' requirements.txt > /tmp/req-notorch.txt
+          pip install -r /tmp/req-notorch.txt pytest pytest-asyncio ruff
+      - run: python -m pytest -q
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install system deps (OCR + media)
+        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr ffmpeg
+      - name: Cache HuggingFace models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-models-${{ hashFiles('requirements.txt') }}
+      # Install the CPU torch wheel FIRST: pip then sees torch>=2.2 already
+      # satisfied and does not pull the multi-GB CUDA bundle from PyPI.
+      - name: Install CPU torch
+        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Start the service (real models, echo LLM, example docs)
+        env:
+          LOCAL_RAG_DOCUMENTS_DIR: data/examples
+          LOCAL_RAG_VECTOR_DB_DIR: /tmp/local-rag-ci/chroma
+          LOCAL_RAG_MANIFEST_DB: /tmp/local-rag-ci/manifest.db
+          LOCAL_RAG_BM25_PATH: /tmp/local-rag-ci/bm25.json
+          LOCAL_RAG_EMBEDDING_PROVIDER: sentence-transformers
+          LOCAL_RAG_RERANKER_PROVIDER: cross-encoder
+          LOCAL_RAG_LLM_PROVIDER: echo
+          LOCAL_RAG_WATCHER_ENABLED: "false"
+          LOCAL_RAG_PORT: "8000"
+        run: |
+          mkdir -p /tmp/local-rag-ci
+          nohup python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 \
+            > /tmp/local-rag-ci/server.log 2>&1 &
+          echo $! > /tmp/local-rag-ci/server.pid
+      - name: Run the smoke test (real models)
+        run: |
+          python scripts/smoke_test.py --expect-real-models --expect-ocr \
+            --base-url http://127.0.0.1:8000 \
+            --output /tmp/local-rag-ci/smoke-results.json
+      - name: Show server log on failure
+        if: failure()
+        run: cat /tmp/local-rag-ci/server.log
+      - name: Stop the server
+        if: always()
+        run: kill "$(cat /tmp/local-rag-ci/server.pid)" 2>/dev/null || true
+      - name: Upload smoke-test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-results
+          path: |
+            /tmp/local-rag-ci/smoke-results.json
+            /tmp/local-rag-ci/server.log

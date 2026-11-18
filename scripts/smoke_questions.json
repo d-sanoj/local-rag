@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "examples": [
+    {
+      "file": "beekeeping-guide.md",
+      "type": "md",
+      "topic": "beekeeping \u2014 hive inspection and the smoker",
+      "question": "How do I inspect a beehive and what does the smoker do?",
+      "retrieval": true
+    },
+    {
+      "file": "orbital-mechanics-notes.txt",
+      "type": "txt",
+      "topic": "orbital mechanics \u2014 Hohmann transfer and delta-v",
+      "question": "What is a Hohmann transfer and how much delta-v does it need?",
+      "retrieval": true
+    },
+    {
+      "file": "library-catalogue.py",
+      "type": "py",
+      "topic": "code \u2014 library catalogue, find by ISBN, overdue fines",
+      "question": "How does the library catalogue find a book by ISBN?",
+      "retrieval": true
+    },
+    {
+      "file": "sourdough-guide.pdf",
+      "type": "pdf",
+      "topic": "sourdough baking \u2014 starter, levain, autolyse",
+      "question": "How do I maintain a sourdough starter and what is autolyse?",
+      "retrieval": true
+    },
+    {
+      "file": "telescope-report.docx",
+      "type": "docx",
+      "topic": "telescope observation \u2014 Andromeda nebula, aperture",
+      "question": "What did the telescope observation report say about the Andromeda nebula?",
+      "retrieval": true
+    },
+    {
+      "file": "train-timetable.html",
+      "type": "html",
+      "topic": "train timetable \u2014 InterCity sleeper service, platform 7",
+      "question": "When does the InterCity sleeper service depart and from which platform?",
+      "retrieval": true
+    },
+    {
+      "file": "birdwatching-sightings.csv",
+      "type": "csv",
+      "topic": "birdwatching \u2014 goldfinch count at the reservoir",
+      "question": "What is the goldfinch count at the reservoir?",
+      "retrieval": true
+    },
+    {
+      "file": "recipes.json",
+      "type": "json",
+      "topic": "recipes \u2014 lemon drizzle cake ingredients and baking time",
+      "question": "What are the ingredients and baking time for the lemon drizzle cake?",
+      "retrieval": true
+    },
+    {
+      "file": "zebra-crossing-sign.png",
+      "type": "png",
+      "topic": "image OCR \u2014 zebra crossing sign text",
+      "question": "What does the zebra crossing sign say?",
+      "retrieval": true,
+      "requires": "ocr"
+    },
+    {
+      "file": "tone-sample.wav",
+      "type": "wav",
+      "topic": "audio \u2014 3s tone (transcription pipeline only, no spoken words)",
+      "question": null,
+      "retrieval": false,
+      "note": "Tone, not speech: only asserts the file is indexed."
+    },
+    {
+      "file": "test-pattern-clip.mp4",
+      "type": "mp4",
+      "topic": "video \u2014 3s test pattern with tone (transcription pipeline only)",
+      "question": null,
+      "retrieval": false,
+      "note": "Test pattern, not speech: only asserts the file is indexed."
+    }
+  ]
+}

@@ -3,3 +3,5 @@
 pytest>=8.0
 pytest-asyncio>=0.23
 ruff>=0.4
+# Only used by scripts/generate_examples.py to build the PDF example.
+reportlab>=4.0

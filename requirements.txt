@@ -23,7 +23,13 @@ Pillow>=10.0
 pytesseract>=0.3.13
 
 # Video / audio transcription
+# NOTE: av is pinned below 19 on purpose. faster-whisper 1.2.1 calls
+# av.open(..., metadata_errors="ignore"), and PyAV 19 removed that
+# parameter — with av 19 every audio/video file fails to index
+# (TypeError at transcribe time). Keep this pin until faster-whisper
+# stops passing metadata_errors.
 faster-whisper>=1.0
+av>=11,<19
 
 # Folder watcher
 watchdog>=4.0

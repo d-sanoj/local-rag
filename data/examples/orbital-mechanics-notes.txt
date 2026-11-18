@@ -1,0 +1,17 @@
+Orbital mechanics notes
+
+A Hohmann transfer is the most fuel-efficient way to move a spacecraft
+between two circular orbits in the same plane. The spacecraft fires its
+engine once to enter an elliptical transfer orbit whose perigee touches
+the inner orbit and whose apogee touches the outer orbit, coasts halfway
+around, then fires again to circularise at the target altitude.
+
+The total delta-v of a Hohmann transfer depends on the two orbital radii.
+For a transfer from low Earth orbit at 300 kilometres up to geostationary
+orbit, the total is about 3.9 kilometres per second, split into two burns
+of roughly 2.4 and 1.5 kilometres per second.
+
+Perigee is the point of an orbit closest to the body being orbited, and
+apogee is the farthest point. A spacecraft moves fastest at perigee and
+slowest at apogee, which is why the transfer burns happen at those two
+points.
