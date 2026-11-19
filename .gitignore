@@ -14,14 +14,30 @@ build/
 # Local data — the vector DB, manifest, BM25 snapshot, and your documents.
 # Your documents are YOURS; they never belong in the repo. The four sample
 # files in data/documents/ are the exception: they are tracked so a fresh
-# clone has something to ask questions about.
+# clone has something to ask questions about. The files in data/examples/
+# are the exception too: they are the fixed example set the CI end-to-end
+# check indexes and asks questions about.
 data/*
 !data/documents
+!data/examples
 data/documents/*
 !data/documents/intro.md
 !data/documents/notes.txt
 !data/documents/data.csv
 !data/documents/example.py
+data/examples/*
+!data/examples/beekeeping-guide.md
+!data/examples/orbital-mechanics-notes.txt
+!data/examples/library-catalogue.py
+!data/examples/sourdough-guide.pdf
+!data/examples/telescope-report.docx
+!data/examples/train-timetable.html
+!data/examples/birdwatching-sightings.csv
+!data/examples/recipes.json
+!data/examples/zebra-crossing-sign.png
+!data/examples/tone-sample.wav
+!data/examples/test-pattern-clip.mp4
+!data/examples/README.md
 
 # macOS / editors
 .DS_Store

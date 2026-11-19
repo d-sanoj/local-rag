@@ -1,0 +1,3 @@
+# Streamlit GUI for local-rag — separate from the service dependencies.
+streamlit>=1.30
+httpx>=0.27

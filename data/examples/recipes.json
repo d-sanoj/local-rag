@@ -1,0 +1,28 @@
+[
+  {
+    "name": "lemon drizzle cake",
+    "servings": 8,
+    "baking_time_minutes": 45,
+    "ingredients": [
+      "flour",
+      "butter",
+      "sugar",
+      "eggs",
+      "lemons"
+    ],
+    "method": "Cream the butter and sugar, beat in the eggs, fold in the flour, bake at 180C, then pour the lemon syrup over the warm cake."
+  },
+  {
+    "name": "tomato soup",
+    "servings": 4,
+    "baking_time_minutes": 0,
+    "ingredients": [
+      "tomatoes",
+      "onion",
+      "garlic",
+      "vegetable stock",
+      "basil"
+    ],
+    "method": "Soften the onion and garlic, add the tomatoes and stock, simmer for twenty minutes, then blend until smooth."
+  }
+]
